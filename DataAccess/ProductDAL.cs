@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Thenewwebapi.Models;
 using System;
 using System.Collections.Generic;
@@ -43,7 +44,31 @@ namespace Thenewwebapi.DataAccess
         public string GetPeople() {
           
             
-            string sql = "SELECT * FROM People FOR JSON path , root ('what')";
+            string sql = "SELECT * FROM Products FOR JSON path , root ('people')";
+            using (SqlConnection cnn = new SqlConnection(AppSettings.ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(sql, cnn))
+                {
+                    // Open the connection
+                    cnn.Open();
+                    var jsonResult = new StringBuilder();
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read()) {
+                    jsonResult.Append(reader.GetValue(0).ToString());
+                    }
+                    // Execute command
+                     return jsonResult.ToString();
+                    //Console.WriteLine(jsonResult.ToString());
+                }
+            }
+         
+
+
+        }
+       
+
+        public string GetProducts() {
+             string sql = "SELECT * FROM Products FOR JSON path , root ('products')";
             using (SqlConnection cnn = new SqlConnection(AppSettings.ConnectionString))
             {
                 // Create command object
@@ -60,31 +85,6 @@ namespace Thenewwebapi.DataAccess
                     return jsonResult.ToString();
                 }
             }
-         
-
-
-        }
-        public int GetPeopleCountScalar()
-        {
-            rowsAffected = 0;
-            // Create SQL statement to submit
-            string sql = "SELECT COUNT(*) FROM People";
-
-            // Create a connection
-            using (SqlConnection cnn = new SqlConnection(AppSettings.ConnectionString))
-            {
-                // Create command object
-                using (SqlCommand cmd = new SqlCommand(sql, cnn))
-                {
-                    // Open the connection
-                    cnn.Open();
-                    // Execute command
-                    rowsAffected = (int)cmd.ExecuteScalar();
-                }
-            }
-            ResultText = "Rows Affected: " + rowsAffected.ToString();
-
-            return rowsAffected;
         }
     }
 }

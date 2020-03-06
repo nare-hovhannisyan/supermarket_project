@@ -32,8 +32,8 @@ namespace Thenewwebapi.Services
         public string GetPeopleItems()
         {
             ProductDAL productDAL = new ProductDAL();
-            var result = productDAL.GetPeople();
-            return(result);
+            productDAL.GetPeople();
+            return("aa");
             //return (productDAL.GetPeople());
         }
     }

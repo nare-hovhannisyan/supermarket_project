@@ -28,6 +28,7 @@ namespace Thenewwebapi
         {
             services.AddControllers();
             services.AddSingleton<IPeopleServices, PeopleServices>();
+            services.AddSingleton<IProductsServices, ProductsServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
